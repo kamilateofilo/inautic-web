@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { FlatList } from "react"
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
-import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
+
 import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
-import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
 import axios from "axios";
-import Vessel from "../../../src/components/vessel"
-
-
+import Vessel from "../../../src/components/vessel";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -29,8 +19,8 @@ const Dashboard = () => {
 
   const [vessels, setVessels] = useState([]);
 
-  const getUser = async () => {
-    const data = await localStorage.getItem("@inautic/user");
+  const getUser = () => {
+    const data = localStorage.getItem("@inautic/user");
 
     setUser(JSON.parse(data));
   };
@@ -51,23 +41,29 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    setInterval(() => {
-      getVessel();
-    }, 10000);
+    if (user.nome.length) {
+      setInterval(() => {
+        getVessel();
+      }, 10000);
+    }
   }, [user]);
-
 
   return (
     <Box m="20px">
       {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" marginLeft={60}>
-                <img
-                  alt="logo-user"
-                  width="250px"
-                  height="100px"
-                  src={require("../../assents/logo.png")}
-                  style={{ cursor: "pointer"}}
-                />
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        marginLeft={60}
+      >
+        <img
+          alt="logo-user"
+          width="250px"
+          height="100px"
+          src={require("../../assents/logo.png")}
+          style={{ cursor: "pointer" }}
+        />
         {/* <Header subtitle="Bem Vindo ao painel geral">/>  */}
 
         <Box>
@@ -87,75 +83,22 @@ const Dashboard = () => {
       </Box>
 
       {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
+      <Box>
         {/* ROW 1 */}
-        <div style={{ marginTop: 8, padding: "0 10px", display: "flex", overflowX: "auto" }}>
-        {vessels.map((item) => (
-          <Vessel key={item.id.toString()} item={item} />
-        ))}
-       </div>
-        
-
-        {/* <Box
-          gridColumn="span 3"
-          backgroundColor="#00f"  // Substitua pela cor desejada
-          display="flex"
-          alignItems="center"
-          
-          >
-          <FlatList
-            keyExtractor={(item) => item.id.toString()}  // Certifique-se de usar toString() para a chave
-            data={vessels}
-            renderItem={({ item }) => <Vessel item={item} />}
-          />
-        </Box> */}
-
-
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+        <div
+          style={{
+            marginTop: 8,
+            padding: "0 10px",
+            display: "flex",
+            overflowX: "auto",
+            flexDirection: "row",
+          }}
         >
-          {/* <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress="0.30"
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          {/* <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress="0.80"
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
-        </Box>
+          {vessels.map((item) => (
+            <Vessel key={item.id.toString()} item={item} />
+          ))}
+        </div>
 
-        
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -259,14 +202,12 @@ const Dashboard = () => {
         </Box>
 
         {/* ROW 3 */}
-         <Box
+        <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
-        >
-          
-        </Box>
+        ></Box>
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -300,7 +241,6 @@ const Dashboard = () => {
             <GeographyChart isDashboard={true} />
           </Box>
         </Box>
-        
       </Box>
     </Box>
   );

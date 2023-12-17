@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react";
-import CircularProgress from '@mui/material/CircularProgress';
-import { Container, Engine, EngineContent, EngineTitle } from './styles';
+import CircularProgress from "@mui/material/CircularProgress";
+import { Container, Engine, EngineContent, EngineTitle } from "./styles";
 
 const Itens = ({ item, info }) => {
   const [engines, setEngines] = useState([]);
@@ -23,7 +22,7 @@ const Itens = ({ item, info }) => {
               Motor #{engine} - {Math.round(info.motor1FluxoAtual)} KM/L
             </EngineTitle>
           </EngineContent>
-          <View>
+          <div>
             <CircularProgress
               radius={35}
               value={`${
@@ -35,7 +34,7 @@ const Itens = ({ item, info }) => {
               inActiveStrokeColor={"#008159"}
               inActiveStrokeOpacity={0.4}
             />
-          </View>
+          </div>
         </Engine>
       ))}
     </Container>

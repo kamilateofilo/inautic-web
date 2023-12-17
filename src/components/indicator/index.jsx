@@ -1,10 +1,12 @@
 import React from "react";
-import { Text } from "react";
 
 const Indicator = ({ item, info }) => {
-  const porcentIndicator = (info.tanque1VolumeAtual / info.tanque1VolumeMax) * 100;
-  const porcentIndicator2 = (info.tanque2VolumeAtual / info.tanque2VolumeMax) * 100;
-  const porcentIndicator3 = (info.tanque3VolumeAtual / info.tanque3VolumeMax) * 100;
+  const porcentIndicator =
+    (info.tanque1VolumeAtual / info.tanque1VolumeMax) * 100;
+  const porcentIndicator2 =
+    (info.tanque2VolumeAtual / info.tanque2VolumeMax) * 100;
+  const porcentIndicator3 =
+    (info.tanque3VolumeAtual / info.tanque3VolumeMax) * 100;
 
   const tankWidth = 40;
   const tankHeight = 100;
@@ -13,7 +15,7 @@ const Indicator = ({ item, info }) => {
   const containerWidth = tankWidth + temperatureBarWidth + 40;
 
   return (
-    <div className="fuel-indicator-container">
+    <div className="fuel-indicator-container" style={{ display: "flex" }}>
       <div style={{ flex: 0.3 }}>
         <svg height={tankHeight + 20} width={containerWidth}>
           {/* Tanque de combustível */}
@@ -39,19 +41,19 @@ const Indicator = ({ item, info }) => {
             rx="4"
           />
 
-          <text x={50} y={30} textAnchor="start" fontSize="15" fill="#000">
+          <text x={50} y={30} textAnchor="start" fontSize="15" fill="#fff">
             {`${info.tanque1TemperaturaAtual}°C`}
           </text>
 
-          <text x={50} y={65} textAnchor="start" fontSize="15" fill="#000">
+          <text x={50} y={65} textAnchor="start" fontSize="15" fill="#fff">
             {`${Math.round(info.tanque1VolumeAtual)}L`}
           </text>
 
-          <text x={50} y={100} textAnchor="start" fontSize="15" fill="#000">
+          <text x={50} y={100} textAnchor="start" fontSize="15" fill="#fff">
             {`${Math.round(info.tanque1DensidadeAtual)}G/L`}
           </text>
         </svg>
-        <span>Tanque 1</span>
+        <p>Tanque 1</p>
       </div>
       <div style={{ flex: 0.3 }}>
         <svg height={tankHeight + 20} width={containerWidth}>
@@ -79,19 +81,19 @@ const Indicator = ({ item, info }) => {
           />
 
           {/* Texto de temperatura */}
-          <text x={60} y={30} textAnchor="start" fontSize="15" fill="#000">
+          <text x={60} y={30} textAnchor="start" fontSize="15" fill="#fff">
             {`${info.tanque2TemperaturaAtual}°C`}
           </text>
 
-          <text x={60} y={65} textAnchor="start" fontSize="15" fill="#000">
+          <text x={60} y={65} textAnchor="start" fontSize="15" fill="#fff">
             {`${Math.round(info.tanque2VolumeAtual)}L`}
           </text>
 
-          <text x={60} y={100} textAnchor="start" fontSize="15" fill="#000">
+          <text x={60} y={100} textAnchor="start" fontSize="15" fill="#fff">
             {`${Math.round(info.tanque2DensidadeAtual)}G/L`}
           </text>
         </svg>
-        <Text>Tanque 2</Text>
+        <p>Tanque 2</p>
       </div>
       <div style={{ flex: 0.3 }}>
         <svg height={tankHeight + 20} width={containerWidth}>
@@ -119,19 +121,19 @@ const Indicator = ({ item, info }) => {
           />
 
           {/* Texto de temperatura */}
-          <text x={60} y={30} textAnchor="start" fontSize="14" fill="#000">
+          <text x={60} y={30} textAnchor="start" fontSize="14" fill="#fff">
             {`${info.tanque3TemperaturaAtual}°C`}
           </text>
 
-          <text x={60} y={65} textAnchor="start" fontSize="14" fill="#000">
+          <text x={60} y={65} textAnchor="start" fontSize="14" fill="#fff">
             {`${Math.round(info.tanque3VolumeAtual)}L`}
           </text>
 
-          <text x={60} y={100} textAnchor="start" fontSize="14" fill="#000">
+          <text x={60} y={100} textAnchor="start" fontSize="14" fill="#fff">
             {`${Math.round(info.tanque3DensidadeAtual)}G/L`}
           </text>
         </svg>
-        <Text>Tanque 3</Text>
+        <p>Tanque 3</p>
       </div>
     </div>
   );
