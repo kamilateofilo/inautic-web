@@ -36,14 +36,45 @@ const Dashboard = () => {
       .catch((err) => console.log(err));
   };
 
+  const getAlerts = async () => {
+    await axios
+      .post("https://nodered.brenopereira.com.br/api/alertasCombustivel", {
+        embarcacaoID: "1",
+      })
+      .then((res) => console.log(res.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getFuelDensity = async () => {
+    await axios
+      .post(
+        "https://nodered.brenopereira.com.br/api/historicoTanqueDensidadeAgrupado",
+        {
+          equipID: "1",
+        }
+      )
+      .then((res) => console.log(res.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getUser();
   }, []);
 
   useEffect(() => {
     if (user.nome.length) {
+      getVessel();
+      getAlerts();
+      getFuelDensity();
+
       setInterval(() => {
         getVessel();
+        getAlerts();
+        getFuelDensity();
       }, 10000);
     }
   }, [user]);
