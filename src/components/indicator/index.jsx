@@ -15,8 +15,11 @@ const Indicator = ({ item, info }) => {
   const containerWidth = tankWidth + temperatureBarWidth + 40;
 
   return (
-    <div className="fuel-indicator-container" style={{ display: "flex" }}>
-      <div style={{ flex: 0.3 }}>
+    <div
+      className="fuel-indicator-container"
+      style={{ display: "flex", justifyContent: "center" }}
+    >
+      <div>
         <svg height={tankHeight + 20} width={containerWidth}>
           {/* Tanque de combustível */}
           <rect
@@ -55,7 +58,7 @@ const Indicator = ({ item, info }) => {
         </svg>
         <p>Tanque 1</p>
       </div>
-      <div style={{ flex: 0.3 }}>
+      <div>
         <svg height={tankHeight + 20} width={containerWidth}>
           {/* Tanque de combustível */}
           <rect
@@ -95,7 +98,7 @@ const Indicator = ({ item, info }) => {
         </svg>
         <p>Tanque 2</p>
       </div>
-      <div style={{ flex: 0.3 }}>
+      <div>
         <svg height={tankHeight + 20} width={containerWidth}>
           {/* Tanque de combustível */}
           <rect

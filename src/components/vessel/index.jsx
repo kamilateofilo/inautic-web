@@ -35,12 +35,6 @@ const Vessel = ({ item }) => {
 
   if (item.id !== 1) return null;
 
-  console.log(
-    "Vessel Component - Rendered with item and vesselInfo:",
-    item,
-    vesselInfo
-  );
-
   return (
     <div>
       <div>

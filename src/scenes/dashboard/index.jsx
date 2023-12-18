@@ -8,6 +8,8 @@ import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 import axios from "axios";
 import Vessel from "../../../src/components/vessel";
+import RpmChart from "../../components/RpmChart";
+import FuelChart from "../../components/FuelChart";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -19,10 +21,24 @@ const Dashboard = () => {
 
   const [vessels, setVessels] = useState([]);
 
+  const [fuelData, setFuelData] = useState([]);
+
+  const [temperatureData, setTemperatureData] = useState([]);
+
+  const [densityData, setDensityData] = useState([]);
+
+  const [flowData, setFlowData] = useState([]);
+
+  const [rpmData, setRpmData] = useState([]);
+
   const getUser = () => {
     const data = localStorage.getItem("@inautic/user");
 
-    setUser(JSON.parse(data));
+    if (data) {
+      setUser(JSON.parse(data));
+    } else {
+      window.location.href = "/login";
+    }
   };
 
   const getVessel = async () => {
@@ -37,39 +53,185 @@ const Dashboard = () => {
   };
 
   const getAlerts = async () => {
-    await axios
-      .post("https://nodered.brenopereira.com.br/api/alertasCombustivel", {
+    await axios.post(
+      "https://nodered.brenopereira.com.br/api/alertasCombustivel",
+      {
         embarcacaoID: "1",
-      })
-      .then((res) => console.log(res.data))
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+    );
   };
 
   const getFuelDensity = async () => {
-    await axios
-      .post(
-        "https://nodered.brenopereira.com.br/api/historicoTanqueDensidadeAgrupado",
-        {
-          equipID: "1",
-        }
-      )
-      .then((res) => console.log(res.data))
-      .catch((err) => {
-        console.log(err);
-      });
+    await axios.post(
+      "https://nodered.brenopereira.com.br/api/historicoTanqueDensidadeAgrupado",
+      {
+        equipID: "1",
+      }
+    );
   };
 
   useEffect(() => {
     getUser();
   }, []);
 
+  const getFuelGrouped = async () => {
+    await axios
+      .post(
+        "https://nodered.brenopereira.com.br/api/historicoTanqueVolumeAgrupado",
+        {
+          equipID: 1,
+        }
+      )
+      .then(async (res) => {
+        const fuel = res.data.reduce((acc, item) => {
+          const data = item.hora.split("T")[0]; // Extrai a parte da data da hora
+          const existente = acc.find((el) => el.dia === data);
+
+          if (existente) {
+            existente.total += item.valorMedio;
+          } else {
+            acc.push({
+              dia: data,
+              total: item.valorMedio,
+            });
+          }
+
+          return acc;
+        }, []);
+
+        setFuelData(fuel);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getTemperatureGrouped = async () => {
+    await axios
+      .post(
+        "https://nodered.brenopereira.com.br/api/historicoTanqueTemperaturaAgrupado",
+        {
+          equipID: 4,
+        }
+      )
+      .then(async (res) => {
+        const temperature = res.data.reduce((acc, item) => {
+          const data = item.hora.split(" ")[0]; // Extrai a parte da data da hora
+          const existente = acc.find((el) => el.dia === data);
+
+          if (existente) {
+            existente.total += item.valorMedio;
+          } else {
+            acc.push({
+              dia: data,
+              total: item.valorMedio,
+            });
+          }
+
+          return acc;
+        }, []);
+
+        setTemperatureData(temperature);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getDensityGrouped = async () => {
+    await axios
+      .post(
+        "https://nodered.brenopereira.com.br/api/historicoTanqueDensidadeAgrupado",
+        {
+          equipID: 7,
+        }
+      )
+      .then(async (res) => {
+        const density = res.data.reduce((acc, item) => {
+          const data = item.hora.split(" ")[0]; // Extrai a parte da data da hora
+          const existente = acc.find((el) => el.dia === data);
+
+          if (existente) {
+            existente.total += item.valorMedio;
+          } else {
+            acc.push({
+              dia: data,
+              total: item.valorMedio,
+            });
+          }
+
+          return acc;
+        }, []);
+
+        setDensityData(density);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getFlowGrouped = async () => {
+    await axios
+      .post(
+        "https://nodered.brenopereira.com.br/api/historicoMotorFluxoAgrupado",
+        {
+          equipID: 10,
+        }
+      )
+      .then(async (res) => {
+        const flow = res.data.reduce((acc, item) => {
+          const data = item.hora.split(" ")[0]; // Extrai a parte da data da hora
+          const existente = acc.find((el) => el.dia === data);
+
+          if (existente) {
+            existente.total += item.valorMedio;
+          } else {
+            acc.push({
+              dia: data,
+              total: item.valorMedio,
+            });
+          }
+
+          return acc;
+        }, []);
+
+        setFlowData(flow);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getRPMGrouped = async () => {
+    await axios
+      .post(
+        "https://nodered.brenopereira.com.br/api/historicoMotorRpmAgrupado",
+        {
+          equipID: 12,
+        }
+      )
+      .then(async (res) => {
+        const rpm = res.data.reduce((acc, item) => {
+          const data = item.hora.split(" ")[0]; // Extrai a parte da data da hora
+          const existente = acc.find((el) => el.dia === data);
+
+          if (existente) {
+            existente.total += item.valorMedio;
+          } else {
+            acc.push({
+              dia: data,
+              total: item.valorMedio,
+            });
+          }
+
+          return acc;
+        }, []);
+
+        setRpmData(rpm);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     if (user.nome.length) {
       getVessel();
-      getAlerts();
-      getFuelDensity();
+      getFuelGrouped();
+      getTemperatureGrouped();
+      getDensityGrouped();
+      getFlowGrouped();
+      getRPMGrouped();
 
       setInterval(() => {
         getVessel();
@@ -81,56 +243,112 @@ const Dashboard = () => {
 
   return (
     <Box m="20px">
-      {/* HEADER */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        marginLeft={60}
-      >
-        <img
-          alt="logo-user"
-          width="250px"
-          height="100px"
-          src={require("../../assents/logo.png")}
-          style={{ cursor: "pointer" }}
-        />
-        {/* <Header subtitle="Bem Vindo ao painel geral">/>  */}
-
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
-      </Box>
-
       {/* GRID & CHARTS */}
-      <Box>
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px"
+      >
         {/* ROW 1 */}
-        <div
-          style={{
-            marginTop: 8,
-            padding: "0 10px",
-            display: "flex",
-            overflowX: "auto",
-            flexDirection: "row",
-          }}
-        >
-          {vessels.map((item) => (
-            <Vessel key={item.id.toString()} item={item} />
-          ))}
-        </div>
 
         <Box
+          gridColumn="span 12"
+          gridRow="span 3"
+          backgroundColor={colors.primary[400]}
+        >
+          <Box height="100%" mt="-20px">
+            {vessels.map((item) => (
+              <Vessel key={item.id.toString()} item={item} />
+            ))}
+          </Box>
+        </Box>
+        <Box
+          gridColumn="span 4"
+          gridRow="span 3"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Histórico RPM
+          </Typography>
+          <Box height="100%" mt="-20px">
+            <RpmChart isDashboard={true} rpm={rpmData} />
+          </Box>
+        </Box>
+
+        <Box
+          gridColumn="span 4"
+          gridRow="span 3"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Densidade do tanque
+          </Typography>
+          <Box height="100%" mt="-20px">
+            <FuelChart isDashboard={true} fuel={densityData} />
+          </Box>
+        </Box>
+
+        <Box
+          gridColumn="span 4"
+          gridRow="span 3"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Volume do tanque
+          </Typography>
+          <Box height="100%" mt="-20px">
+            <FuelChart isDashboard={true} fuel={fuelData} />
+          </Box>
+        </Box>
+
+        <Box
+          gridColumn="span 6"
+          gridRow="span 3"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Fluxo do motor
+          </Typography>
+          <Box height="100%" mt="-20px">
+            <FuelChart isDashboard={true} fuel={flowData} />
+          </Box>
+        </Box>
+
+        <Box
+          gridColumn="span 6"
+          gridRow="span 3"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            Temperatura do tanque
+          </Typography>
+          <Box height="100%" mt="-20px">
+            <FuelChart isDashboard={true} fuel={temperatureData} />
+          </Box>
+        </Box>
+
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -179,9 +397,9 @@ const Dashboard = () => {
               </Box>
             </Box>
           ))}
-        </Box>
+        </Box> */}
 
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -230,48 +448,7 @@ const Dashboard = () => {
               </Box>
             </Box>
           ))}
-        </Box>
-
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        ></Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Sales Quantity
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Geography Based Traffic
-          </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
-          </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

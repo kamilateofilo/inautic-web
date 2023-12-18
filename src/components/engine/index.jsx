@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import CircularProgress from "@mui/material/";
 import { Container, Engine, EngineContent, EngineTitle } from "./styles";
+import ReactSpeedometer from "react-d3-speedometer";
 
 const Itens = ({ item, info }) => {
   const [engines, setEngines] = useState([]);
@@ -15,28 +16,33 @@ const Itens = ({ item, info }) => {
 
   return (
     <Container>
-      {engines.map((engine) => (
-        <Engine>
-          <EngineContent>
-            <EngineTitle>
-              Motor #{engine} - {Math.round(info.motor1FluxoAtual)} KM/L
-            </EngineTitle>
-          </EngineContent>
-          <div>
-            <CircularProgress
-              radius={35}
-              value={`${
-                engine === 1 ? info.motor1RpmAtual : info.motor2RpmAtual
-              }`}
-              textColor="#008159"
-              fontSize={12}
-              title={"RPM"}
-              inActiveStrokeColor={"#008159"}
-              inActiveStrokeOpacity={0.4}
-            />
-          </div>
-        </Engine>
-      ))}
+      <Engine>
+        <ReactSpeedometer
+          maxValue={7200}
+          value={`${info.motor1RpmAtual}`}
+          needleColor="red"
+          startColor="green"
+          segments={10}
+          endColor="blue"
+          currentValueText={"RPM MOTOR #1"}
+          width={300}
+          height={200}
+        />
+      </Engine>
+
+      <Engine>
+        <ReactSpeedometer
+          maxValue={7200}
+          value={`${info.motor2RpmAtual}`}
+          needleColor="red"
+          startColor="green"
+          segments={10}
+          endColor="blue"
+          currentValueText={"RPM MOTOR #2"}
+          width={300}
+          height={200}
+        />
+      </Engine>
     </Container>
   );
 };

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Image } from "react"; // Substitua por componentes do React para web
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import axios from "axios";
 
-const Login = ({ history }) => {
+const Login = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
@@ -21,7 +20,6 @@ const Login = ({ history }) => {
       if (response.data.length) {
         const user = JSON.stringify(response.data[0]);
         localStorage.setItem("@inautic/user", user);
-        console.log(localStorage.getItem("@inautic/user"));
         window.location.href = "/";
       } else {
         alert("Usuário não encontrado.");

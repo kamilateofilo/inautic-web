@@ -12,6 +12,7 @@ export const Engine = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
+  margin: 0 40px;
 `;
 
 export const EngineContent = styled.div`
