@@ -26,23 +26,15 @@ const Vessel = ({ item }) => {
 
   useEffect(() => {
     axios
-      .get("https://nodered.brenopereira.com.br/api/1/variaveis")
+      .get(`https://nodered.brenopereira.com.br/api/${item.id}/variaveis`)
       .then((res) => setVesselInfo(res.data))
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  if (item.id !== 1) return null;
+  }, [item]);
 
   return (
     <div>
-      <div>
-        <div>
-          <span style={styles.title}>{item.nome}</span>
-        </div>
-      </div>
-
       <Engine item={item} info={vesselInfo} />
 
       <div>

@@ -4,21 +4,21 @@ import { tokens } from "../theme";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const RpmChart = ({ isDashboard = false, equipID }) => {
+const FlowChart = ({ isDashboard = false, equipID }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [rpmData, setRpmData] = useState([]);
+  const [flowData, setFlowData] = useState([]);
 
   const getRPMGrouped = async () => {
     await axios
       .post(
-        "https://nodered.brenopereira.com.br/api/historicoMotorRpmAgrupado",
+        "https://nodered.brenopereira.com.br/api/historicoMotorFluxoAgrupado",
         {
           equipID: equipID,
         }
       )
       .then(async (res) => {
-        const rpm = res.data.reduce((acc, item) => {
+        const flow = res.data.reduce((acc, item) => {
           const data = item.hora.split(" ")[0]; // Extrai a parte da data da hora
           const existente = acc.find((el) => el.dia === data);
 
@@ -34,7 +34,7 @@ const RpmChart = ({ isDashboard = false, equipID }) => {
           return acc;
         }, []);
 
-        setRpmData(rpm);
+        setFlowData(flow);
       })
       .catch((err) => console.log(err));
   };
@@ -47,7 +47,7 @@ const RpmChart = ({ isDashboard = false, equipID }) => {
 
   return (
     <ResponsiveBar
-      data={rpmData}
+      data={flowData}
       theme={{
         // added
         axis: {
@@ -165,4 +165,4 @@ const RpmChart = ({ isDashboard = false, equipID }) => {
   );
 };
 
-export default RpmChart;
+export default FlowChart;

@@ -63,30 +63,29 @@ const Login = () => {
                 <input
                   placeholder="Digite a sua senha"
                   style={styles.input}
-                  type={isPasswordShown ? "text" : "password"}
+                  type={"password"}
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                 />
+                {/* <button
+                  onClick={() => setIsPasswordShown(!isPasswordShown)}
+                  style={{
+                    position: "absolute",
+                    right: 12,
+                    marginRight: 605,
+                    marginTop: -39,
+                    border: "none",
+                    backgroundColor: "#FFF",
+                  }}
+                >
+                  {isPasswordShown ? (
+                    <IoEyeOff size={24} color="#000" />
+                  ) : (
+                    <IoEye size={24} color="#000" />
+                  )}
+                </button> */}
               </div>
             </div>
-
-            <button
-              onClick={() => setIsPasswordShown(!isPasswordShown)}
-              style={{
-                position: "absolute",
-                right: 12,
-                marginRight: 605,
-                marginTop: -39,
-                border: "none",
-                backgroundColor: "#FFF",
-              }}
-            >
-              {isPasswordShown ? (
-                <IoEyeOff size={24} color="#000" />
-              ) : (
-                <IoEye size={24} color="#000" />
-              )}
-            </button>
           </div>
         </div>
 
@@ -116,7 +115,6 @@ const styles = {
   },
   logo: {
     width: 280,
-    height: 150,
     marginLeft: 620,
     marginTop: -50,
   },
@@ -168,6 +166,7 @@ const styles = {
     marginLeft: 296,
     width: 403,
     justifyContent: "center",
+    position: "relative",
   },
   action: {
     backgroundColor: "#0B54EE",

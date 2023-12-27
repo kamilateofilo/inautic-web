@@ -4,7 +4,7 @@ import { tokens } from "../theme";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const RpmChart = ({ isDashboard = false, equipID }) => {
+const DensityChart = ({ isDashboard = false, equipID }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rpmData, setRpmData] = useState([]);
@@ -12,13 +12,13 @@ const RpmChart = ({ isDashboard = false, equipID }) => {
   const getRPMGrouped = async () => {
     await axios
       .post(
-        "https://nodered.brenopereira.com.br/api/historicoMotorRpmAgrupado",
+        "https://nodered.brenopereira.com.br/api/historicoTanqueDensidadeAgrupado",
         {
           equipID: equipID,
         }
       )
       .then(async (res) => {
-        const rpm = res.data.reduce((acc, item) => {
+        const density = res.data.reduce((acc, item) => {
           const data = item.hora.split(" ")[0]; // Extrai a parte da data da hora
           const existente = acc.find((el) => el.dia === data);
 
@@ -34,7 +34,7 @@ const RpmChart = ({ isDashboard = false, equipID }) => {
           return acc;
         }, []);
 
-        setRpmData(rpm);
+        setRpmData(density);
       })
       .catch((err) => console.log(err));
   };
@@ -165,4 +165,4 @@ const RpmChart = ({ isDashboard = false, equipID }) => {
   );
 };
 
-export default RpmChart;
+export default DensityChart;
